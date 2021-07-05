@@ -1,0 +1,529 @@
+@import _variables
+
+
+
+@mixin hamburG($color)
+    width: 80%
+    height: 6px
+    border-radius: 2rem
+    background: $color
+    margin: auto
+
+@mixin absoluto()
+    position: absolute
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+
+@mixin flex($v)
+    @if $v == col
+        display: flex
+        flex-direction: column
+    @if $v == row
+        display: flex
+        flex-direction: row
+
+
+@mixin centradoH()
+    margin-left: auto
+    margin-right: auto
+
+
+
+
+body
+    background: white
+
+.bMenu
+    position: fixed
+    z-index: 2
+    top: 5px
+    left: 5px
+    height: 40px
+    width: 50px
+    background: none
+    @include flex(col)
+    justify-content: space-around 
+    cursor: pointer
+
+
+
+
+.hambur
+    @include hamburG($primario)
+    
+.hambur2
+    @include hamburG(white)
+
+.menuAmpliado
+    position: fixed
+    z-index: 2
+    top: 0px
+    left: 0px
+    padding-top: 90px
+    height: calc(100% - 90px)
+    width: 60px
+    background: $primario
+
+.containerBtnOpcionMenu
+    height: 100%
+    width: 100%
+    background: none
+    @include flex(col)
+    justify-content: flex-start
+
+.btnOpcionMenu
+    margin-bottom: 50px
+    @include centradoH()
+    width: 50px
+    height: 50px
+    background: white
+    border-radius: 1rem
+
+.container
+    @include absoluto()
+    padding: 0px
+    z-index: 1
+
+.subContainer
+    position: absolute
+    @include flex(col)
+    justify-content: flex-start
+    top: 0px
+    left: 0px
+    height: auto
+    width: calc(100% - 140px)
+    padding-top: 70px
+    padding-left: 70px
+    padding-right: 70px
+
+
+.comida
+    position: relative
+    @include flex(row)
+    justify-content: space-between
+    font-size: 20px
+    margin-bottom: 10px
+    width: 100%
+    border-bottom: solid
+    border-color: rgba(0, 0, 0, 0.24)
+    border-bottom-width: 1px
+    padding-bottom: 5px
+    cursor: pointer
+
+.contInfoComida
+    position: fixed
+    top: 0px
+    left: 0px
+    width: 100%
+    height: 100%
+    z-index: 3
+    display: none
+
+.exitComida
+    @include absoluto()
+    background: #00000060
+    z-index: 1
+
+.infoComida
+    position: absolute
+    height: 80%
+    width: 80%
+    margin: auto
+    top: 0px
+    left: 0px
+    right: 0px
+    bottom: 0px
+    background: white
+    z-index: 2
+    border: solid
+    border-width: 1px
+    border-color: $primario
+    border-radius: 0.5rem
+    overflow-y: auto
+    overflow-x: hidden
+
+.grid
+    display: grid
+    width: 80%
+    padding: 5px
+    @include centradoH()
+    grid-template-columns: 25% 25% 25% 25%
+    row-gap: 10px
+    font-family: "Trebuchet MS", Helvetica, sans-serif
+    font-size: 12px
+    font-weight: bold
+    color: #0e0c0cb5
+
+
+
+.cel
+    margin-top: auto
+    margin-bottom: auto
+    margin-left: 0px
+    margin-right: auto
+
+.label
+    text-decoration: underline
+
+.ingredientesBox
+    margin-top: 20px
+    padding-top: 10px
+    border: solid
+    border-width: 2px
+    border-radius: 0.5rem
+    border-color: #8b30e096
+    width: 80%
+    @include centradoH()
+    background: #d284ba33
+    overflow-y: auto
+    max-height: 200px
+    margin-bottom: 15px
+
+.ingrediente
+    margin-bottom: 5px
+    list-style: circle
+    div
+        @include flex(row)
+
+
+.tituloCont
+    @include flex(row)
+    justify-content: center
+    margin-top: 30px
+    margin-bottom: 30px    
+    width: inherit
+    margin-left: auto
+    margin-right: auto
+
+.titulo1
+    font-size: 25px
+    text-align: center
+
+.tipo
+    border: solid
+    border-width: 1px
+    border-radius: 0.5rem
+    height: fit-content
+    padding: 2px
+    font-size: 10px
+    align-self: flex-end
+    opacity: 0.7
+    color: #a233bd
+    margin-left: 5px
+
+
+.titulo2
+    font-size: 15px
+    font-weight: bold
+    margin-bottom: 10px
+    text-decoration: underline
+    width: 80%
+    @include centradoH()
+
+.info1
+    left: 10%
+    position: relative
+    margin-bottom: 10px
+
+
+.btn1
+    position: fixed
+    background: #21d821
+    padding: 10px
+    z-index: 2
+    cursor: pointer
+    bottom: 20px
+    right: 20px
+    border: solid
+    border-width: 2px
+    border-radius: 1rem
+    border-color: #00800047
+    font-weight: bold
+
+
+.formAdd
+    @include flex(col)
+    padding: 10px
+    gap: 25px
+
+    input, select
+        border: none
+        border-bottom: solid
+        border-width: 1px
+        font-family: monospace
+        font-style: italic
+    label
+        font-size: 20px
+
+
+.addCIngredientes
+    position: relative
+    @include centradoH()
+    width: 80%
+    min-height: 150px
+    max-height: 300px
+    overflow-y: auto
+    border: solid
+    border-width: 2px
+    border-color: $primario
+    border-radius: 1rem
+    background: #efedeb
+    h3
+        position: sticky
+        right: 0px
+        left: 0px
+        @include centradoH()
+        top: 0px
+        margin-top: 0px
+        margin-bottom: 0px
+        text-align: center
+        background: $primario
+        color: white
+        z-index: 5
+    button
+        position: absolute
+        bottom: 0px
+        right: 0px
+        background: #21d821
+        border-width: 2px
+        border-color: #00800047
+
+.addCOpcion
+    position: absolute
+    bottom: 10px
+    width: 100%
+    @include flex(row)
+    justify-content: space-around
+
+.cancelBtn
+    background: #ff000075
+    cursor: pointer
+    border: solid
+    border-width: 2px
+    border-radius: 1rem
+    border-color: #80130047
+    font-weight: bold
+    padding: 10px 5px 10px 5px
+.confirmBtn
+    background: #00ff4c75
+    cursor: pointer
+    border: solid
+    border-width: 2px
+    border-radius: 1rem
+    border-color: #2f800047
+    font-weight: bold
+    padding: 10px 5px 10px 5px
+
+
+.selectI
+    @include flex(col)
+    overflow-y: auto
+    padding-top: 10px
+    background: white
+    position: absolute
+    height: 100%
+    width: 100%
+    top: 0px
+    left: 0px
+    z-index: 4
+
+#search
+    width: 90%
+    @include centradoH()
+
+#selectIConf
+    position: fixed
+    right: 10px
+    bottom: 10px
+
+.selectIIngrediente
+    @include flex(row)
+    padding: 10px 0px 0px 20px
+    
+#contSelecIIngrediente1
+    display: none
+
+#contIngre
+    position: relative
+    height: auto
+    width: 100%
+
+.cantIngreInput
+    border: none
+    border-bottom: solid
+    border-width: 1px
+    font-family: monospace
+    font-style: italic
+    max-width: 50px
+    margin-left: 10px
+    background: none
+
+#newIngre
+    z-index: 6
+
+.inputIngre
+    width: 40px
+
+#añadirIngre
+    position: fixed
+    left: 10px
+    bottom: 10px
+    border-color: #4e8ed2
+    background: #00bcd4a6
+    border-width: 1px
+    padding: 5px 2px 5px 2px
+    font-size: 13px
+    font-weight: 500
+    cursor: pointer
+    border: solid
+    border-radius: 1rem
+
+
+
+.ingrediente2    
+    margin-bottom: 20px
+    list-style: decimal-leading-zero
+    font-weight: 600
+    font-family: system-ui
+
+.ingrediente2NombreCont
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+.ingrediente2Nombre
+    color: darkslateblue
+    text-decoration: underline
+
+
+.diaCont
+    width: 155px
+    background: #d3d3d35e
+    border-color: $primario
+    border: solid
+    border-width: 2px
+    border-radius: 0.5rem
+    display: flex
+    flex-direction: column
+    overflow-x: hidden
+    margin: 10px
+
+.nombreDia
+    text-align: center
+    padding-top: 5px
+    padding-bottom: 5px
+    background: $primario2
+    border-bottom: solid
+    border-width: 1px
+    border-color: $primario
+    color: #8b30e0
+    font-size: 22px
+    font-weight: bold
+
+.comidaDia
+    position: relative
+    text-align: center
+    padding-top: 2px
+    padding-bottom: 2px
+    background: #8a8a8a
+    border-bottom: solid
+    border-width: 1px
+    border-color: #8b30e0
+    color: #ffffff
+    font-size: 17px
+
+.comidaNombre
+    text-align: center
+    height: 70px
+    padding-top: 2px
+    padding-bottom: 2px
+    background: #fbfbfb
+    border-bottom: solid
+    border-width: 1px
+    border-color: #8b30e0
+    color: #383838
+    font-size: 16px
+
+.contValoresDia
+    display: flex
+    flex-direction: column
+    background: #e7d4ff
+
+.valorDia
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+    padding: 5px 20px 5px 20px
+
+.lineaValoresDia
+    width: 100%
+    border-bottom: solid
+    border-width: 1px
+
+#subcontainer
+    display: flex
+    flex-wrap: wrap
+    flex-direction: row
+    justify-content: center
+    margin-top: 100px
+
+
+.opciones
+    @include flex(col)
+    cursor: pointer
+    
+.punto
+    background: #dcc4e8
+    height: 4px
+    width: 4px
+    border-radius: 10rem
+    margin-top: 2px
+
+.menuOpciones
+    @include flex(col)
+    display: none
+    z-index: 2
+    color: black
+    position: absolute
+    right: 15px
+    top: 15px
+    border: solid
+    border-width: 1px
+    padding: 0px 5px 0px 5px
+    background: #e6e6e6
+
+.opcion
+    padding: 5px
+    border: solid
+    border-width: 1px
+    background: #c9e6ff
+    margin: 5px
+    border-radius: 0.5rem
+    cursor: pointer
+
+#searchComida
+    top: 20px
+    margin: auto
+    position: inherit
+    right: 0px
+    left: 0px
+    width: 80%
+
+.searchComidaName
+    margin: 10px 0px 10px 30px
+    font-size: 20px
+    cursor: pointer
+
+.valNormal
+    color: #0fb93c
+    font-weight: bold
+
+.valAlto
+    color: #de4949
+    font-weight: bold
+
+.valBajo
+    color: #22a6ce
+    font-weight: bold
