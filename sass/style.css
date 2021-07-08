@@ -609,7 +609,7 @@ body {
   -webkit-box-pack: center;
       -ms-flex-pack: center;
           justify-content: center;
-  margin-top: 100px;
+  margin-top: 10px;
 }
 
 .opciones {
@@ -689,5 +689,27 @@ body {
 .valBajo {
   color: #22a6ce;
   font-weight: bold;
+}
+
+.tablaValores {
+  margin: auto;
+  margin-top: 80px;
+  border: solid;
+  border-width: 2px;
+  padding: 10px;
+}
+
+.tablaValoresT td {
+  border-left: solid;
+  border-rigth: solid;
+  border-width: 1px;
+  padding: 5px;
+}
+
+.tablaValoresV td {
+  border-left: solid;
+  border-rigth: solid;
+  border-width: 1px;
+  padding: 5px;
 }
 /*# sourceMappingURL=style.css.map */

@@ -14,14 +14,6 @@
     $proR = explode(",", $_POST['proR']);
     $grasaR = explode(",", $_POST['grasaR']);
 
-    $kcalOtro = 0;
-    $proOtro = 0;
-    $grasaOtro = 0;
-
-    // Crea un array con todos los enteros entre el minimo y el maximo recomendable
-    $kcalRange = range($kcalR[1], $kcalR[0]);
-    $proRange = range($proR[1], $proR[0]);
-    $grasaRange = range($grasaR[1], $grasaR[0]);
 
     // Lista de comidas que encajan en los valores recomendados en combinacion con la comida ya existende en ese dia
     $validas = [];
@@ -42,55 +34,31 @@
 
     foreach($consulta as $tabla){
 
-        $otroComida = new Comida($tabla[$otro]);
         $idOtro = $tabla[$otro];
 
     }
 
 
-// Valores de la comida existente
-    $kcalOtro += $otroComida->get(6);
-    $proOtro += $otroComida->get(12);
-    $grasaOtro += $otroComida->get(7);
 
 
-    // busca las comidas que, en combinacion con la que ya está asignada a este dia, se mantengan dentro del rando recomendado
+    // busca las comidas que, en combinacion con la que ya está asignada a este dia, se mantengan dentro del rango recomendado
     function buscar(){
+        if($GLOBALS["idOtro"] == 0){
+            $query = "SELECT * FROM comidas WHERE id != 0 AND USER = " .$GLOBALS["user"] ." AND (tipo = '" .$GLOBALS["tipo"] ."' OR tipo = 'AMBOS') ORDER BY LAST, cont";
+            
+            $consulta = $GLOBALS["mysql"]->query($query);
 
-        $consulta = $GLOBALS["mysql"]->query("SELECT * FROM comidas WHERE `user` = " .$GLOBALS["user"] ." AND (tipo = '" .$GLOBALS["tipo"] ."' OR tipo = 'AMBOS') AND id != " .$GLOBALS["idOtro"]);
-
-        foreach($consulta as $r1){
-
-            $auxComida = new Comida($r1["id"]);
-
-            $auxKcal = $auxComida->get(6);
-            $auxPro = $auxComida->get(12);
-            $auxGrasa = $auxComida->get(7);
-
-            $prueba = false;
-
-            if(in_array(intval($auxKcal + $GLOBALS["kcalOtro"]), $GLOBALS["kcalRange"])){
-                $prueba = true;
-            }else{
-                $prueba = false;
+            foreach($consulta as $comida2){
+                array_push($GLOBALS["validas"], $comida2["id"]);
             }
+        }else{
+            $query = "SELECT * FROM combinacionescomidas WHERE USER = " .$GLOBALS["user"] ." AND (kcal BETWEEN " .$GLOBALS["kcalR"][1] ." AND " .$GLOBALS["kcalR"][0] .") AND (proteina BETWEEN " .$GLOBALS["proR"][1] ." AND " .$GLOBALS["proR"][0] .") AND (grasa BETWEEN " .$GLOBALS["grasaR"][1] ." AND " .$GLOBALS["grasaR"][0] .") AND comida1 = " .$GLOBALS["idOtro"];
+            
+            $consulta = $GLOBALS["mysql"]->query($query);
 
-            if(in_array(intval($auxPro + $GLOBALS["proOtro"]), $GLOBALS["proRange"]) && $prueba == true){
-                $prueba = true;
-            }else{
-                $prueba = false;
+            foreach($consulta as $comida2){
+                array_push($GLOBALS["validas"], $comida2["comida2"]);
             }
-
-            if(in_array(intval($auxGrasa + $GLOBALS["grasaOtro"]), $GLOBALS["grasaRange"]) && $prueba == true){
-                $prueba = true;
-            }else{
-                $prueba = false;
-            }
-
-            if($prueba){
-                array_push($GLOBALS["validas"], $r1["id"]);
-            }
-
         }
     }
 
@@ -99,29 +67,28 @@
     // Si no ha habido ninguna que encaje en el rando, va ampliando el rango en ambos sentidos y con cada ampliación vuelve a comprobar si hay comidas que encajen
     // El proposito de esto es asignar la comida mas equilibrada despues de concluir que no hay ninguna que en combinacion con la ya asiganada al dia que esté dentro del rango deseable
 
-    // esta es la funcion que puede ralentizar la asignación, ya que en el peor de los casos puede llegar a hacer muchas iteracciones en la busqueda de la comida 
-    // pero cuanto mayor sea la lista de comidas del usuario, mas facil será encontrar esa comida ideal
     while(count($validas) < 1){
-        array_unshift($kcalRange, $kcalRange[0]-1);
-        array_push($kcalRange, $kcalRange[array_key_last($kcalRange)]+1);
+        $kcalR[0] = $kcalR[0] + 1;
+        $kcalR[1] = $kcalR[1] - 1;
         buscar();
         if(count($validas) > 0){
             break;
         }
-        array_unshift($proRange, $proRange[0]-1);
-        array_push($proRange, $proRange[array_key_last($proRange)]+1);
+        $proR[0] = $proR[0] + 1;
+        $proR[1] = $proR[1] - 1;
         buscar();
         if(count($validas) > 0){
             break;
         }
-        array_unshift($grasaRange, $grasaRange[0]-1);
-        array_push($grasaRange, $grasaRange[array_key_last($grasaRange)]+1);
+        $grasaR[0] = $grasaR[0] + 1;
+        $grasaR[1] = $grasaR[1] - 1;
         buscar();
     }
+    
 
+    $query = "UPDATE `calendario` SET `" .$cambiar ."`= " .$validas[array_rand($validas, 1)] ." WHERE `user` = " .$user;
 
-
-    $consulta = $mysql->query("UPDATE `calendario` SET `" .$cambiar ."`= " .$validas[0] ." WHERE `user` = " .$user);
+    $consulta = $mysql->query($query);
 
    
 ?>

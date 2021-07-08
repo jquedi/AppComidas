@@ -179,6 +179,20 @@
     var addIngredientesDef = [];
     cambiarMenu();
     cargarLista("");
+    // combinarTodasComidas();
+
+
+
+    async function combinarTodasComidas(){
+        let formData = new FormData();
+        
+        formData.append("user", usuario);
+
+        fetch("combinarAllComidas.php", {
+        method: "POST",
+        body: formData,
+        });
+    }
 
 
 
@@ -373,6 +387,7 @@
         formData.append("tipo", tipo);
         formData.append("prio", prio);
         formData.append("racion", racion);
+        formData.append("user", usuario);
 
         fetch("guardarComida.php", {
         method: "POST",

@@ -58,8 +58,11 @@
             <div onclick="toggleComida(false, -1)" class="exitComida">
             </div>
         </div>
+            <table class="tablaValores" id="tabla">
 
+            </table>
         <div id="subcontainer">
+
         <!-- calendario de comidas -->
         </div>
     </div>
@@ -67,14 +70,35 @@
 
 <script>
 
+var edad = 24;
+var peso = 92;
+var altura = 177;
+var musculo = 61;
+var actividad = 1.375;
+
 var usuario = 1;
 var kcalR = [2200, 1800];
 var proR = [1000, 150];
 var grasaR = [30, 0];
 
+function calcularValoresRecomendados(){
 
+    var kcal = (66 + (13.7*peso) + (5*altura) - (6.75*edad))*actividad;
+    kcalR = [kcal-1000, kcal-1500];
+
+    proR = [musculo*2.5, musculo*1.5];
+
+    grasaR = [kcal*0.038, kcal*0.022];
+
+}
+
+
+
+
+    calcularValoresRecomendados();
     cambiarMenu();
     loadCalendario();
+    loadTabla();
 
 // Funciones para manejar el menu
     function cambiarMenu(){
@@ -141,6 +165,24 @@ function loadCalendario(){
     }).then((response) => response.json())
     .then((result) => {
         document.getElementById("subcontainer").innerHTML = result;
+    });
+}
+
+// Carga la tabla de valores recomendados
+
+function loadTabla(){
+    let formData = new FormData();
+
+    formData.append("kcalR", kcalR);
+    formData.append("proR", proR);
+    formData.append("grasaR", grasaR);
+
+    fetch("tablaValores.php", {
+    method: "POST",
+    body: formData,
+    }).then((response) => response.json())
+    .then((result) => {
+        document.getElementById("tabla").innerHTML = result;
     });
 }
 
@@ -242,7 +284,7 @@ function listaComidasF(estado, filtro, pos){
 
 // Ejecuta de forma asincrona (Ya que puede tardar en ejecutarse) la auto asignacion de una comida a un dia
 
-async function autoCompletar(pos, pos2, tipo){
+function autoCompletar(pos, pos2, tipo){
     let formData = new FormData();
 
     formData.append("tipo", tipo);
@@ -253,17 +295,14 @@ async function autoCompletar(pos, pos2, tipo){
     formData.append("proR", proR);
     formData.append("grasaR", grasaR);
 
-    let promise = new Promise(()=>{
-        fetch("autoCompletar.php", {
-        method: "POST",
-        body: formData,
-        }).then(() => {
-            setTimeout(() => loadCalendario(), 2000);
-        });
+    fetch("autoCompletar.php", {
+    method: "POST",
+    body: formData,
+    }).then(() => {
+        loadCalendario();
     });
 
-    let result = await promise;
-    loadCalendario();
+    
 
 }
 </script>
